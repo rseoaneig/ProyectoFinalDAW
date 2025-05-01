@@ -1,0 +1,38 @@
+.cabecera{
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 50px;
+    height: 2.5em;
+    background-color: #5271FF;
+    text-align: center;
+}
+
+.navegacion{
+    background-color: #a6a6a6;
+    width: 20%;
+}
+
+.sidebar {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 20px;
+    margin-top: 20px;
+}
+.sidebar .nav-link {
+    color: #fff; /* Color blanco para los enlaces */
+    transition: all 0.3s ease; /* Transición suave para interacciones */
+}
+.sidebar .nav-link:hover {
+    /* Efecto al pasar el cursor sobre los enlaces */
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo ligeramente blanco */
+    transform: translateX(5px); /* Mueve el enlace ligeramente a la derecha */
+}
+
+.fondo{
+    background-color: #d9d9d9;
+}
+
+.login{
+    position: absolute;
+}
