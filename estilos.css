@@ -18,6 +18,8 @@
     border-radius: 15px; /* Bordes redondeados */
     padding: 20px;
     margin-top: 20px;
+    display: inline-block;
+    width: 100%;
 }
 .sidebar .nav-link {
     color: #fff; /* Color blanco para los enlaces */
@@ -35,4 +37,42 @@
 
 .login{
     position: absolute;
+}
+
+.textoImagenesGal{
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 40px;
+    padding: 30px;
+    display: grid;
+    text-align: center;
+}
+
+.imagenesGaleria {
+    display: grid;
+    place-items: center; 
+}
+
+.imagenesGaleria img{
+    width: 1200px; 
+    height: auto; 
+    border-radius: 15px;
+}
+
+.parrafoPrincipal{
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 35px;
+    line-height: 50px;
+    padding: 30px;
+    display: grid;
+    text-align: left;
+}
+
+.separadorNav{
+    color: #fff;
+    padding: 20px;
+    text-decoration: underline;
 }
