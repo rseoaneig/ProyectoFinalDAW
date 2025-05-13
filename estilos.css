@@ -61,6 +61,17 @@
     border-radius: 15px;
 }
 
+.imagenSoplete {
+    display: grid;
+    place-items: center; 
+}
+
+.imagenSoplete img{
+    width: 800px; 
+    height: auto; 
+    border-radius: 15px;
+}
+
 .parrafoPrincipal{
     color: black;
     font-family: Arial, Helvetica, sans-serif;
