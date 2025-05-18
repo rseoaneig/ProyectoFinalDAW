@@ -126,3 +126,26 @@
   right: 0;
 }
 
+.oculto{
+    display: none !important;
+}
+
+.parrafoPrincipal{
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    line-height: 50px;
+    padding: 30px;
+    display: grid;
+    text-align: center;
+}
+
+.inputText{
+    width: 100px;
+    height: 30px;
+}
+
+.checkbox{
+    width: 20px;
+    height: 20px;
+}

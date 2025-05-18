@@ -7,6 +7,7 @@
     <title>Presupuesto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="estilos.css">
+    <script src="scripts.js" defer></script>
 </head>
 
 <body class="fondo">
@@ -53,14 +54,37 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 col-lg-10 d-md-block">
+            <div id="seleccion" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Elige tu obra o reforma</span>
                 <div class="presupuestoContainer">
-                    <img src="./imagenes/bano2.jpg" alt="Bano" class="top-left">
-                    <img src="./imagenes/cocina1.jpg" alt="Cocina" class="top-right">
-                    <img src="./imagenes/tejado1.jpeg" alt="Tejado" class="bottom-left">
-                    <img src="./imagenes/fontaneria1.jpg" alt="Fontaneria" class="bottom-right">
+                    <img src="./imagenes/bano2.jpg" id="imgBano" alt="Bano" class="top-left">
+                    <img src="./imagenes/cocina1.jpg" id="imgCocina" alt="Cocina" class="top-right">
+                    <img src="./imagenes/tejado1.jpeg" id="imgTejado" alt="Tejado" class="bottom-left">
+                    <img src="./imagenes/fontaneria1.jpg" id="imgFontaneria" alt="Fontaneria" class="bottom-right">
                 </div>
+            </div>
+            <div id="bano" class="col-md-9 col-lg-10 d-md-block">
+                <span class="textoImagenesGal">Sección: Baño</span>
+                <ul class="parrafoPrincipal" style="list-style-type:none">
+                    <li>Plato de ducha: <input class="checkbox" id="pDucha" type="checkbox"></li>
+                    <li>Cristal de ducha: <input class="checkbox" id="cDucha" type="checkbox"></li>
+                    <li>Lavabo: <input class="checkbox" id="lavabo" type="checkbox"></li>
+                    <li>Azulejo: <input class="checkbox" id="azulejo" type="checkbox"></li>
+                    <li>m2 de azulejo: <input class="inputText" id="m2azulejo" type="text"></li><br>    
+                    <li><button id="bCalcPresupuesto">Calcular Presupuesto</button></li><br>
+                    <p id="resultadoBano"></p>             
+                </ul>
+                
+                
+            </div>
+            <div id="cocina" class="col-md-9 col-lg-10 d-md-block">
+                <span class="textoImagenesGal">Sección: Cocina</span>
+            </div>
+            <div id="tejado" class="col-md-9 col-lg-10 d-md-block">Sección: Tejado
+                <span class="textoImagenesGal">Sección: Tejado</span>
+            </div>
+            <div id="fontaneria" class="col-md-9 col-lg-10 d-md-block">
+                <span class="textoImagenesGal">Sección: Fontaneria</span>
             </div>
         </div>
     </div>
