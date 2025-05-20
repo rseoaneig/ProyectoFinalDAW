@@ -71,16 +71,27 @@
                     <li>Lavabo: <input class="checkbox" id="lavabo" type="checkbox"></li>
                     <li>Azulejo: <input class="checkbox" id="azulejo" type="checkbox"></li>
                     <li>m2 de azulejo: <input class="inputText" id="m2azulejo" type="text"></li><br>    
-                    <li><button id="bCalcPresupuesto">Calcular Presupuesto</button></li><br>
+                    <li><button id="bCalcularBano">Calcular Presupuesto</button></li><br>
                     <p id="resultadoBano"></p>             
                 </ul>
-                
-                
             </div>
             <div id="cocina" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Cocina</span>
+                <ul class="parrafoPrincipal" style="list-style-type:none">                    
+                    <li>Fregadero: <input class="checkbox" id="fregadero" type="checkbox"></li>
+                    <li>Campana extractora: <input class="checkbox" id="cExtractora" type="checkbox"></li>
+                    <li>Encimera (selecciona material): <input class="checkbox" id="encimera" type="checkbox"></li>
+                    <li>
+                        <input class="checkbox" name="matEncimera" id="lGranito" type="radio" value="granito" checked><label for="lGranito">Granito</label>
+                        <input class="checkbox" name="matEncimera" id="lMarmol" type="radio" value="marmol"><label for="lMarmol">Mármol</label>
+                        <input class="checkbox" name="matEncimera" id="lBasalto" type="radio" value="basalto"><label for="lBasalto">Basalto </label>                  
+                    </li>
+                    <li>m2 de encimera: <input class="inputText" id="m2encimera" type="text"></li><br>   
+                    <li><button id="bCalcularCocina">Calcular Presupuesto</button></li><br>
+                    <p id="resultadoCocina"></p>             
+                </ul>
             </div>
-            <div id="tejado" class="col-md-9 col-lg-10 d-md-block">Sección: Tejado
+            <div id="tejado" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Tejado</span>
             </div>
             <div id="fontaneria" class="col-md-9 col-lg-10 d-md-block">
