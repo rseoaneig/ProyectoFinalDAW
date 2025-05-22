@@ -1,3 +1,22 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"])) {
+    // Guardar en la cookie (estará disponible en la próxima carga)
+    setcookie("username", $_POST["username"], time() + (86400 * 3), "/");
+
+    // Redirigir para limpiar el POST y el input
+    header("Location: " . $_SERVER['PHP_SELF'] . "?limpio=1");
+    exit();
+}
+
+// Mostrar el valor de la cookie solo si no acabamos de hacer submit
+if (!isset($_GET["limpio"])) {
+    $username = isset($_COOKIE["username"]) ? $_COOKIE["username"] : "";
+} else {
+    $username = ""; // campo vacío tras enviar
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,16 +33,13 @@
         <div class="container-fluid py-3 cabecera">
             <div class="row">
                 <div class="col-md-3 col-lg-2 d-md-block login">
-                    <form id="form" class="mb-3">
+                    <form method="post" action="" id="form" class="mb-3" >
                         <div class="d-flex align-items-start gap-2">
                             <div class="d-flex flex-column w-100">
-                                <input type="text" class="form-control mb-2" placeholder="Usuario">
-                                <input type="text" class="form-control mb-2" placeholder="Contraseña">
+                                <input type="text" name="username" class="form-control mb-2" placeholder="Usuario" value="<?php echo htmlspecialchars($username); ?>">
+                                <input type="text" name="password" class="form-control mb-2" placeholder="Contraseña">
                             </div>
-                            <button id="submitBtn" type="submit" class="btn btn-secondary h-100">
-                                <span class="spinner"></span>
-                                <span id="text">Enviar</span>
-                            </button>
+                            <input id="submitBtn" type="submit" value="Enviar" class="btn btn-secondary h-100"/>
                         </div>
                     </form>
                 </div>
