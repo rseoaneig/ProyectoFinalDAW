@@ -49,6 +49,18 @@ CREATE TABLE trabajo_material (
     FOREIGN KEY (id_material) REFERENCES materiales(id_material)
 );
 
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    tipo ENUM('empleado', 'cliente') NOT NULL,
+    id_empleado INT,
+    id_cliente INT,
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+
 -- INSERCIÓN DE DATOS
 
 INSERT INTO empleados VALUES
@@ -120,3 +132,14 @@ INSERT INTO trabajo_material VALUES
 (8, 9, 3),
 (9, 2, 5),
 (10, 5, 2);
+
+INSERT INTO usuarios (username, password, tipo, id_empleado)
+VALUES 
+('carlosg', '1234', 'empleado', 1),
+('mariaL', 'passmaria', 'empleado', 2);
+
+INSERT INTO usuarios (username, password, tipo, id_cliente)
+VALUES
+('robertod', 'roberto123', 'cliente', 1),
+('lucian', 'clave456', 'cliente', 2);
+
