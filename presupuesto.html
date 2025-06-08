@@ -44,31 +44,38 @@
             </div>
             <div id="bano" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Baño</span>
-                <ul class="parrafoPrincipal" style="list-style-type:none">
-                    <li>Plato de ducha: <input class="checkbox" id="pDucha" type="checkbox"></li>
-                    <li>Cristal de ducha: <input class="checkbox" id="cDucha" type="checkbox"></li>
-                    <li>Lavabo: <input class="checkbox" id="lavabo" type="checkbox"></li>
-                    <li>Azulejo: <input class="checkbox" id="azulejo" type="checkbox"></li>
-                    <li>m2 de azulejo: <input class="inputText" id="m2azulejo" type="text"></li><br>    
-                    <li><button id="bCalcularBano">Calcular Presupuesto</button></li><br>
-                    <p id="resultadoBano"></p>             
-                </ul>
+                <div class="contenedorParrafo">
+                    <ul class="parrafoPrincipal" style="list-style-type:none">
+                        <li>Plato de ducha: <input class="checkbox" id="pDucha" type="checkbox"></li>
+                        <li>Cristal de ducha: <input class="checkbox" id="cDucha" type="checkbox"></li>
+                        <li>Lavabo: <input class="checkbox" id="lavabo" type="checkbox"></li>
+                        <li>Azulejo: <input class="checkbox" id="azulejo" type="checkbox"></li>
+                        <li>m2 de azulejo: <input class="inputText" id="m2azulejo" type="text"></li>
+                        <li><button class="btn btn-primary mt-3" id="bCalcularBano">Calcular Presupuesto</button></li>
+                        <p id="resultadoBano" class="mt-3"></p>
+                    </ul>
+                </div>
             </div>
             <div id="cocina" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Cocina</span>
-                <ul class="parrafoPrincipal" style="list-style-type:none">                    
-                    <li>Fregadero: <input class="checkbox" id="fregadero" type="checkbox"></li>
-                    <li>Campana extractora: <input class="checkbox" id="cExtractora" type="checkbox"></li>
-                    <li>Encimera (selecciona material): <input class="checkbox" id="encimera" type="checkbox"></li>
-                    <li>
-                        <input class="checkbox" name="matEncimera" id="lGranito" type="radio" value="granito" checked><label for="lGranito">Granito</label>
-                        <input class="checkbox" name="matEncimera" id="lMarmol" type="radio" value="marmol"><label for="lMarmol">Mármol</label>
-                        <input class="checkbox" name="matEncimera" id="lBasalto" type="radio" value="basalto"><label for="lBasalto">Basalto </label>                  
-                    </li>
-                    <li>m2 de encimera: <input class="inputText" id="m2encimera" type="text"></li><br>   
-                    <li><button id="bCalcularCocina">Calcular Presupuesto</button></li><br>
-                    <p id="resultadoCocina"></p>             
-                </ul>
+                <div class="contenedorParrafo">
+                    <ul class="parrafoPrincipal" style="list-style-type:none">
+                        <li>Fregadero: <input class="checkbox" id="fregadero" type="checkbox"></li>
+                        <li>Campana extractora: <input class="checkbox" id="cExtractora" type="checkbox"></li>
+                        <li>Encimera (selecciona material): <input class="checkbox" id="encimera" type="checkbox"></li>
+                        <li>
+                            <input class="checkbox" name="matEncimera" id="lGranito" type="radio" value="granito"
+                                checked><label for="lGranito">Granito</label>
+                            <input class="checkbox" name="matEncimera" id="lMarmol" type="radio" value="marmol"><label
+                                for="lMarmol">Mármol</label>
+                            <input class="checkbox" name="matEncimera" id="lBasalto" type="radio" value="basalto"><label
+                                for="lBasalto">Basalto </label>
+                        </li>
+                        <li>m2 de encimera: <input class="inputText" id="m2encimera" type="text"></li>
+                        <li><button class="btn btn-primary mt-3" id="bCalcularCocina">Calcular Presupuesto</button></li>
+                        <p id="resultadoCocina" class="mt-3"></p>
+                    </ul>
+                </div>
             </div>
             <div id="tejado" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Tejado</span>

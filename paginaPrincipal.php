@@ -137,7 +137,7 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
                         </form>
                     <?php else: ?>
                         <div class="d-flex flex-column">
-                            <div class="text-wrap" style="font-size: 30px; line-height: 1.2;">
+                            <div class="text-wrap" style="font-size: 40px">
                                 Bienvenido <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
                             </div>
                         </div>
@@ -179,12 +179,14 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
                     <img src="./imagenes/imagenPrincipal.jpg" alt="Imagen principal de Soe Pro Services">
                 </div>
                 <span class="textoImagenesGal">LA EMPRESA</span>
-                <p class="parrafoPrincipal">
+                <div class="contenedorParrafo">
+                    <p class="parrafoPrincipal">
                     Soe Pro Services: 
                     Somos una empresa de marcado carácter profesional, con una dilatada trayectoria en la ciudad de La Coruña.
                     Fundada hace más de 50 años, ofrecemos a nuestros clientes un servicio completo en materia de fontanería, calefacción, gas, pintura y albañilería.
                     Ponemos a su disposición un trabajo personalizado, serio y de calidad que nos hace ser un referente en el sector.
-                </p>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
