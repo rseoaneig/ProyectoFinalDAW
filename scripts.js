@@ -107,3 +107,90 @@ function calcularCocina(){
         result.innerHTML = "El presupuesto total es " + total + "€";
     }
 }
+
+function calcularTejado() {
+    let total = 0;
+    let result = document.getElementById("resultadoTejado");
+
+    const retiradaTejado = document.getElementById("retiradaTejado");
+    const impermeabilizacion = document.getElementById("impermeabilizacion");
+    const aislante = document.getElementById("aislante");
+    const cubierta = document.getElementById("cubierta");
+    const matCubierta = document.querySelector('input[name="materialCubierta"]:checked').value;
+    const m2tejado = document.getElementById("m2tejado").value;
+    let valorMaterial;
+
+    if(matCubierta == "teja") {
+        valorMaterial = 40;
+    } else if (matCubierta == "pizarra") {
+        valorMaterial = 55;
+    } else if (matCubierta == "panel") {
+        valorMaterial = 70;
+    }
+
+    if(retiradaTejado.checked){
+        total += 500;
+    }
+    if(impermeabilizacion.checked){
+        total += 300;
+    }
+    if(aislante.checked){
+        total += 400;
+    }
+    if(cubierta.checked){
+        total += m2tejado * valorMaterial;
+    }
+
+    if (m2tejado != "" && !cubierta.checked) {
+        result.innerHTML = "Por favor, seleccione el check de cubierta para elegir los metros cuadrados";
+    } else if (m2tejado == "" && cubierta.checked) {
+        result.innerHTML = "Por favor, seleccione una cantidad de metros cuadrados de tejado";
+    } else if (isNaN(m2tejado)) {
+        result.innerHTML = "Por favor, introduce un número en la cantidad de metros cuadrados de tejado";
+    } else {
+        result.innerHTML = "El presupuesto total es " + total + "€";
+    }
+}
+
+function calcularFont() {
+    let total = 0;
+    let result = document.getElementById("resultadoFont");
+
+    const cambioTuberias = document.getElementById("cambioTuberias");
+    const instGrifos = document.getElementById("instGrifos");
+    const instTermo = document.getElementById("instTermo");
+    const materialTuberia = document.querySelector('input[name="materialTuberia"]:checked').value;
+    const mlTuberia = document.getElementById("mlTuberia").value;
+    let valorMaterial;
+
+    if (materialTuberia == "cobre") {
+        valorMaterial = 25;
+    } else if (materialTuberia == "pvc") {
+        valorMaterial = 15;
+    } else if (materialTuberia == "ppr") {
+        valorMaterial = 20;
+    }
+
+    if (cambioTuberias.checked) {
+        total += 500;
+    }
+    if (instGrifos.checked) {
+        total += 150;
+    }
+    if (instTermo.checked) {
+        total += 300;
+    }
+    if (mlTuberia !== "" && !isNaN(mlTuberia) && cambioTuberias.checked) {
+        total += mlTuberia * valorMaterial;
+    }
+
+    if (mlTuberia != "" && !cambioTuberias.checked) {
+        result.innerHTML = "Por favor, seleccione el check de cambio de tuberías para indicar los metros lineales.";
+    } else if (mlTuberia == "" && cambioTuberias.checked) {
+        result.innerHTML = "Por favor, introduzca la cantidad de metros lineales de tubería.";
+    } else if (isNaN(mlTuberia)) {
+        result.innerHTML = "Por favor, introduzca un número válido en los metros lineales de tubería.";
+    } else {
+        result.innerHTML = "El presupuesto total es " + total + "€";
+    }
+}

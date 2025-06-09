@@ -50,7 +50,7 @@
                         <li>Cristal de ducha: <input class="checkbox" id="cDucha" type="checkbox"></li>
                         <li>Lavabo: <input class="checkbox" id="lavabo" type="checkbox"></li>
                         <li>Azulejo: <input class="checkbox" id="azulejo" type="checkbox"></li>
-                        <li>m2 de azulejo: <input class="inputText" id="m2azulejo" type="text"></li>
+                        <li>m² de azulejo: <input class="inputText" id="m2azulejo" type="text"></li>
                         <li><button class="btn btn-primary mt-3" id="bCalcularBano">Calcular Presupuesto</button></li>
                         <p id="resultadoBano" class="mt-3"></p>
                     </ul>
@@ -71,17 +71,55 @@
                             <input class="checkbox" name="matEncimera" id="lBasalto" type="radio" value="basalto"><label
                                 for="lBasalto">Basalto </label>
                         </li>
-                        <li>m2 de encimera: <input class="inputText" id="m2encimera" type="text"></li>
+                        <li>m² de encimera: <input class="inputText" id="m2encimera" type="text"></li>
                         <li><button class="btn btn-primary mt-3" id="bCalcularCocina">Calcular Presupuesto</button></li>
                         <p id="resultadoCocina" class="mt-3"></p>
                     </ul>
                 </div>
             </div>
             <div id="tejado" class="col-md-9 col-lg-10 d-md-block">
-                <span class="textoImagenesGal">Sección: Tejado</span>
+                <span class="textoImagenesGal">Sección: Reforma de Tejado</span>
+                <div class="contenedorParrafo">
+                    <ul class="parrafoPrincipal" style="list-style-type:none">
+                        <li>Retirada de tejado antiguo: <input class="checkbox" id="retiradaTejado" type="checkbox"></li>
+                        <li>Impermeabilización: <input class="checkbox" id="impermeabilizacion" type="checkbox"></li>
+                        <li>Instalación de aislante térmico: <input class="checkbox" id="aislante" type="checkbox"></li>
+                        <li>Cubierta nueva (selecciona material): <input class="checkbox" id="cubierta" type="checkbox"></li>
+                        <li>
+                            <input class="checkbox" name="materialCubierta" id="tTeja" type="radio" value="teja" checked>
+                            <label for="tTeja">Teja cerámica</label>
+                            <input class="checkbox" name="materialCubierta" id="tPizarra" type="radio" value="pizarra">
+                            <label for="tPizarra">Pizarra</label>
+                            <input class="checkbox" name="materialCubierta" id="tPanel" type="radio" value="panel">
+                            <label for="tPanel">Panel sandwich</label>
+                        </li>
+                        <li>m² de tejado: <input class="inputText" id="m2tejado" type="text"></li>
+                        <li><button class="btn btn-primary mt-3" id="bCalcularTejado">Calcular Presupuesto</button></li>
+                        <p id="resultadoTejado" class="mt-3"></p>
+                    </ul>
+                </div>
             </div>
             <div id="fontaneria" class="col-md-9 col-lg-10 d-md-block">
-                <span class="textoImagenesGal">Sección: Fontaneria</span>
+                <span class="textoImagenesGal">Sección: Fontanería</span>
+                <div class="contenedorParrafo">
+                    <ul class="parrafoPrincipal" style="list-style-type:none">
+                        <li>Instalación de grifos: <input class="checkbox" id="instGrifos" type="checkbox"></li>
+                        <li>Instalación de termos: <input class="checkbox" id="instTermo" type="checkbox"></li>
+                        <li>Cambio de tuberías antiguas: <input class="checkbox" id="cambioTuberias" type="checkbox"></li>
+                        <li>Material de tubería (selecciona):</li>
+                        <li>
+                            <input class="checkbox" name="materialTuberia" id="mtCobre" type="radio" value="cobre" checked>
+                            <label for="mtCobre">Cobre</label>
+                            <input class="checkbox" name="materialTuberia" id="mtPVC" type="radio" value="pvc">
+                            <label for="mtPVC">PVC</label>
+                            <input class="checkbox" name="materialTuberia" id="mtPPR" type="radio" value="ppr">
+                            <label for="mtPPR">PPR</label>
+                        </li>
+                        <li>Metros lineales de tubería: <input class="inputText" id="mlTuberia" type="text"></li>
+                        <li><button class="btn btn-primary mt-3" id="bCalcularFont">Calcular Presupuesto</button></li>
+                        <p id="resultadoFont" class="mt-3"></p>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
