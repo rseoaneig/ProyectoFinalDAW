@@ -1,76 +1,133 @@
 <?php
 require_once 'BD/Database.php';
 
-$con = Database::connect();
 $mensaje = '';
 $tipo_mensaje = '';
 
-// Manejar la actualización de material
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'update') {
-    $id = $_POST['id_material'];
-    $nombre = $_POST['nombre'];
-    $descripcion = $_POST['descripcion'];
-    $unidad = $_POST['unidad'];
-    $stock = $_POST['stock'];
-    $precio_unitario = $_POST['precio_unitario'];
-    
-    $stmt = $con->prepare("UPDATE materiales SET nombre=?, descripcion=?, unidad=?, stock=?, precio_unitario=? WHERE id_material=?");
-    
-    if ($stmt->execute([$nombre, $descripcion, $unidad, $stock, $precio_unitario, $id])) {
-        $mensaje = "Material actualizado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al actualizar el material";
-        $tipo_mensaje = "error";
+try{
+    // Conexión con BD
+    $con = Database::connect();
+
+    if (!$con) {
+        throw new Exception("Error: No se pudo establecer conexión con la base de datos");
     }
+
+    // Manejar la actualización de material
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'update') {
+        $id = $_POST['id_material'];
+        $nombre = $_POST['nombre'];
+        $descripcion = $_POST['descripcion'];
+        $unidad = $_POST['unidad'];
+        $stock = $_POST['stock'];
+        $precio_unitario = $_POST['precio_unitario'];
+        
+        $stmt = "";
+        $stmt = $con->prepare("UPDATE materiales SET nombre=?, descripcion=?, unidad=?, stock=?, precio_unitario=? WHERE id_material=?");
+        
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        // Comprobación de ejecución con éxito
+        if ($stmt->execute([$nombre, $descripcion, $unidad, $stock, $precio_unitario, $id])) {
+            $mensaje = "Material actualizado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Manejar la inserción de nuevo material
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'insert') {
+        $nombre = $_POST['nombre'];
+        $descripcion = $_POST['descripcion'];
+        $unidad = $_POST['unidad'];
+        $stock = $_POST['stock'];
+        $precio_unitario = $_POST['precio_unitario'];
+        
+        // Obtener el último ID de la tabla
+        $stmt = "";
+        $stmt = $con->query("SELECT MAX(id_material) as ultimo_id FROM materiales");
+
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$resultado) {
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+
+        $ultimo_id = $resultado['ultimo_id'];
+        $siguiente_id = $ultimo_id + 1;
+        
+        // Insertar con el ID específico
+        $stmt = "";
+        $stmt = $con->prepare("INSERT INTO materiales (id_material, nombre, descripcion, unidad, stock, precio_unitario) VALUES (?, ?, ?, ?, ?, ?)");
+        
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        // Comprobación de ejecución con éxito
+        if ($stmt->execute([$siguiente_id, $nombre, $descripcion, $unidad, $stock, $precio_unitario])) {
+            $mensaje = "Material agregado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Manejar la eliminación de material
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'delete') {
+        $id = $_POST['id_material'];
+        
+        $stmt = "";
+        $stmt = $con->prepare("DELETE FROM materiales WHERE id_material = ?");
+
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+        
+        // Comprobación de ejecución con éxito
+        if ($stmt->execute([$id])) {
+            $mensaje = "Material eliminado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Obtener todos los materiales
+    $stmt = "";
+    $stmt = $con->prepare("SELECT * FROM materiales");
+    
+    if (!$stmt) {
+        throw new Exception("Error: No se pudo preparar la consulta SQL");
+    }
+
+    $stmt->execute();
+    $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$materiales) {
+        throw new Exception("Error: No se pudo ejecutar la consulta");
+    }
+
+} catch (PDOException $e) {
+    // Capturar errores específicos de PDO/Base de datos
+    error_log("Error de base de datos: " . $e->getMessage());
+    $mensajeError = $e->getMessage();
+    
+} catch (Exception $e) {
+    // Capturar otros errores generales
+    error_log("Error general: " . $e->getMessage());
+    $mensajeError = $e->getMessage();
 }
 
-// Manejar la inserción de nuevo material
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'insert') {
-    $nombre = $_POST['nombre'];
-    $descripcion = $_POST['descripcion'];
-    $unidad = $_POST['unidad'];
-    $stock = $_POST['stock'];
-    $precio_unitario = $_POST['precio_unitario'];
-    
-    // Obtener el último ID de la tabla
-    $stmt = $con->query("SELECT MAX(id_material) as ultimo_id FROM materiales");
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    $ultimo_id = $resultado['ultimo_id'];
-
-    $siguiente_id = $ultimo_id + 1;
-    
-    // Insertar con el ID específico
-    $stmt = $con->prepare("INSERT INTO materiales (id_material, nombre, descripcion, unidad, stock, precio_unitario) VALUES (?, ?, ?, ?, ?, ?)");
-    
-    if ($stmt->execute([$siguiente_id, $nombre, $descripcion, $unidad, $stock, $precio_unitario])) {
-        $mensaje = "Material agregado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al agregar el material";
-        $tipo_mensaje = "error";
-    }
-}
-
-// Manejar la eliminación de material
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'delete') {
-    $id = $_POST['id_material'];
-    
-    $stmt = $con->prepare("DELETE FROM materiales WHERE id_material = ?");
-    
-    if ($stmt->execute([$id])) {
-        $mensaje = "Material eliminado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al eliminar el material";
-        $tipo_mensaje = "error";
-    }
-}
-
-// Obtener todos los materiales
-$stmt = $con->prepare("SELECT * FROM materiales");
-$stmt->execute();
-$materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +144,7 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="<?php echo $tipo_mensaje; ?>"><?php echo $mensaje; ?></div>
     <?php endif; ?>
     
+    <!-- Tabla con los datos -->
     <table>
         <thead>
             <tr>
@@ -101,6 +159,7 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </thead>
         <tbody>
             <?php foreach ($materiales as $material): ?>
+                <!-- Mapeo de datos de la BD -->
                 <tr>
                     <td><?php echo $material['id_material']; ?></td>
                     <td><?php echo $material['nombre']; ?></td>
@@ -121,7 +180,7 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </button>
                         <button class="btn btn-delete" onclick="confirmarEliminar(
                             <?php echo $material['id_material']; ?>, 
-                            '<?php echo htmlspecialchars($material['nombre'] . ' ' . $material['descripcion']); ?>'
+                            '<?php echo htmlspecialchars($material['nombre'] . '; ' . $material['descripcion']); ?>'
                         )">
                             Eliminar
                         </button>
@@ -130,6 +189,7 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </tbody>
     </table>
+        <!-- Botones para agregar y regresar -->
         <div style="text-align: center; margin-top: 20px;">
             <button class="btn btn-add" onclick="agregarMaterial()">
                 Agregar Nuevo Material
@@ -172,8 +232,8 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 
                 <div class="form-group">
-                    <label for="edit_fecha">Precio Unitario:</label>
-                    <input type="date" id="edit_fecha" name="precio_unitario">
+                    <label for="edit_punit">Precio Unitario:</label>
+                    <input type="text" id="edit_punit" name="precio_unitario">
                 </div>
                 
                 <div class="form-actions">
@@ -216,8 +276,8 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 
                 <div class="form-group">
-                    <label for="add_fecha">Precio Unitario:</label>
-                    <input type="date" id="add_fecha" name="precio_unitario">
+                    <label for="add_punit">Precio Unitario:</label>
+                    <input type="text" id="add_punit" name="precio_unitario">
                 </div>
                 
                 <div class="form-actions">
@@ -256,13 +316,14 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script>
         function editarMaterial(id, nombre, descripcion, unidad, stock, precio_unitario) {
+            // Mapear datos en el modal
             document.getElementById('edit_id').value = id;
             document.getElementById('edit_nombre').value = nombre;
             document.getElementById('edit_descripcion').value = descripcion;
             document.getElementById('edit_unidad').value = unidad;
             document.getElementById('edit_stock').value = stock;
-            document.getElementById('edit_fecha').value = precio_unitario;
-
+            document.getElementById('edit_punit').value = precio_unitario;
+            // Mostrar modal
             document.getElementById('modalEditar').style.display = 'block';
         }
         
@@ -276,9 +337,8 @@ $materiales = $stmt->fetchAll(PDO::FETCH_ASSOC);
             document.getElementById('add_descripcion').value = '';
             document.getElementById('add_unidad').value = '';
             document.getElementById('add_stock').value = '';
-            document.getElementById('add_fecha').value = '';
-            
-            // Mostrar el modal
+            document.getElementById('add_punit').value = '';
+            // Mostrar modal
             document.getElementById('modalAgregar').style.display = 'block';
         }
         

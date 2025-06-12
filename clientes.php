@@ -1,74 +1,130 @@
 <?php
 require_once 'BD/Database.php';
 
-$con = Database::connect();
 $mensaje = '';
 $tipo_mensaje = '';
 
-// Manejar la actualización de cliente
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'update') {
-    $id = $_POST['id_cliente'];
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $direccion = $_POST['direccion'];
-    $telefono = $_POST['telefono'];
-    $correo_electronico = $_POST['correo_electronico'];
-    
-    $stmt = $con->prepare("UPDATE clientes SET nombre=?, apellido=?, direccion=?, telefono=?, correo_electronico=? WHERE id_cliente=?");
-    
-    if ($stmt->execute([$nombre, $apellido, $direccion, $telefono, $correo_electronico, $id])) {
-        $mensaje = "Cliente actualizado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al actualizar el cliente";
-        $tipo_mensaje = "error";
+try{
+
+    $con = Database::connect();
+
+    if (!$con) {
+        throw new Exception("Error: No se pudo establecer conexión con la base de datos");
     }
+
+    // Manejar la actualización de cliente
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'update') {
+        $id = $_POST['id_cliente'];
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $direccion = $_POST['direccion'];
+        $telefono = $_POST['telefono'];
+        $correo_electronico = $_POST['correo_electronico'];
+        
+        $stmt = "";
+        $stmt = $con->prepare("UPDATE clientes SET nombre=?, apellido=?, direccion=?, telefono=?, correo_electronico=? WHERE id_cliente=?");
+        
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        if ($stmt->execute([$nombre, $apellido, $direccion, $telefono, $correo_electronico, $id])) {
+            $mensaje = "Cliente actualizado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Manejar la inserción de nuevo cliente
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'insert') {
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $direccion = $_POST['direccion'];
+        $telefono = $_POST['telefono'];
+        $correo_electronico = $_POST['correo_electronico'];
+        
+        // Obtener el último ID de la tabla
+        $stmt = "";
+        $stmt = $con->query("SELECT MAX(id_cliente) as ultimo_id FROM clientes");
+
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$resultado) {
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+
+        $ultimo_id = $resultado['ultimo_id'];
+        $siguiente_id = $ultimo_id + 1;
+        
+        // Insertar con el ID específico
+        $stmt = "";
+        $stmt = $con->prepare("INSERT INTO clientes (id_cliente, nombre, apellido, direccion, telefono, correo_electronico) VALUES (?, ?, ?, ?, ?, ?)");
+        
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        if ($stmt->execute([$siguiente_id, $nombre, $apellido, $direccion, $telefono, $correo_electronico])) {
+            $mensaje = "Cliente agregado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Manejar la eliminación de cliente
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'delete') {
+        $id = $_POST['id_cliente'];
+        
+        $stmt = "";
+        $stmt = $con->prepare("DELETE FROM clientes WHERE id_cliente = ?");
+
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+        
+        if ($stmt->execute([$id])) {
+            $mensaje = "Cliente eliminado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Obtener todos los clientes
+    $stmt = "";
+    $stmt = $con->prepare("SELECT * FROM clientes");
+    
+    if (!$stmt) {
+        throw new Exception("Error: No se pudo preparar la consulta SQL");
+    }
+
+    $stmt->execute();
+    $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$clientes) {
+        throw new Exception("Error: No se pudo ejecutar la consulta");
+    }
+
+} catch (PDOException $e) {
+    // Capturar errores específicos de PDO/Base de datos
+    error_log("Error de base de datos: " . $e->getMessage());
+    $mensajeError = $e->getMessage();
+    
+} catch (Exception $e) {
+    // Capturar otros errores generales
+    error_log("Error general: " . $e->getMessage());
+    $mensajeError = $e->getMessage();
 }
 
-// Manejar la inserción de nuevo cliente
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'insert') {
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $direccion = $_POST['direccion'];
-    $telefono = $_POST['telefono'];
-    $correo_electronico = $_POST['correo_electronico'];
-    
-    $stmt = $con->query("SELECT MAX(id_cliente) as ultimo_id FROM clientes");
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    $ultimo_id = $resultado['ultimo_id'];
-
-    $siguiente_id = $ultimo_id + 1;
-    
-    $stmt = $con->prepare("INSERT INTO clientes (id_cliente, nombre, apellido, direccion, telefono, correo_electronico) VALUES (?, ?, ?, ?, ?, ?)");
-    
-    if ($stmt->execute([$siguiente_id, $nombre, $apellido, $direccion, $telefono, $correo_electronico])) {
-        $mensaje = "Cliente agregado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al agregar el cliente";
-        $tipo_mensaje = "error";
-    }
-}
-
-// Manejar la eliminación de cliente
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'delete') {
-    $id = $_POST['id_cliente'];
-    
-    $stmt = $con->prepare("DELETE FROM clientes WHERE id_cliente = ?");
-    
-    if ($stmt->execute([$id])) {
-        $mensaje = "Cliente eliminado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al eliminar el cliente";
-        $tipo_mensaje = "error";
-    }
-}
-
-// Obtener todos los clientes
-$stmt = $con->prepare("SELECT * FROM clientes");
-$stmt->execute();
-$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

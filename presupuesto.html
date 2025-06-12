@@ -11,6 +11,7 @@
 </head>
 
 <body class="fondo">
+    <!-- Cabecera -->
     <header>
         <div class="container-fluid py-3 cabecera">
             <div class="row">
@@ -22,6 +23,7 @@
         <div class="row">
             <div class="col-md-3 col-lg-2 d-md-block">
                 <div class="sticky-top">
+                    <!-- Barra de navegación -->
                     <div class="sidebar">
                         <ul class="nav flex-column">
                             <li class="nav-item"><a href="paginaPrincipal.php" class="nav-link">Página Principal</a>
@@ -33,6 +35,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Mosaico de imágenes -->
             <div id="seleccion" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Elige tu obra o reforma</span>
                 <div class="presupuestoContainer">
@@ -42,9 +45,11 @@
                     <img src="./imagenes/fontaneria1.jpg" id="imgFontaneria" alt="Fontaneria" class="bottom-right">
                 </div>
             </div>
+            <!-- Zonas de presupuesto (mostradas condicionalmente) -->
             <div id="bano" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Baño</span>
                 <div class="contenedorParrafo">
+                    <!-- Lista de opciones -->
                     <ul class="parrafoPrincipal" style="list-style-type:none">
                         <li>Plato de ducha: <input class="checkbox" id="pDucha" type="checkbox"></li>
                         <li>Cristal de ducha: <input class="checkbox" id="cDucha" type="checkbox"></li>
@@ -59,6 +64,7 @@
             <div id="cocina" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Cocina</span>
                 <div class="contenedorParrafo">
+                    <!-- Lista de opciones -->
                     <ul class="parrafoPrincipal" style="list-style-type:none">
                         <li>Fregadero: <input class="checkbox" id="fregadero" type="checkbox"></li>
                         <li>Campana extractora: <input class="checkbox" id="cExtractora" type="checkbox"></li>
@@ -80,6 +86,7 @@
             <div id="tejado" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Reforma de Tejado</span>
                 <div class="contenedorParrafo">
+                    <!-- Lista de opciones -->
                     <ul class="parrafoPrincipal" style="list-style-type:none">
                         <li>Retirada de tejado antiguo: <input class="checkbox" id="retiradaTejado" type="checkbox"></li>
                         <li>Impermeabilización: <input class="checkbox" id="impermeabilizacion" type="checkbox"></li>
@@ -102,6 +109,7 @@
             <div id="fontaneria" class="col-md-9 col-lg-10 d-md-block">
                 <span class="textoImagenesGal">Sección: Fontanería</span>
                 <div class="contenedorParrafo">
+                    <!-- Lista de opciones -->
                     <ul class="parrafoPrincipal" style="list-style-type:none">
                         <li>Instalación de grifos: <input class="checkbox" id="instGrifos" type="checkbox"></li>
                         <li>Instalación de termos: <input class="checkbox" id="instTermo" type="checkbox"></li>

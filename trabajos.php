@@ -1,78 +1,134 @@
 <?php
 require_once 'BD/Database.php';
 
-$con = Database::connect();
 $mensaje = '';
 $tipo_mensaje = '';
 
-// Manejar la actualización de trabajo
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'update') {
-    $id = $_POST['id_trabajo'];
-    $id_cliente = $_POST['id_cliente'];
-    $id_empleado = $_POST['id_empleado'];
-    $descripcion = $_POST['descripcion'];
-    $tipo_trabajo = $_POST['tipo_trabajo'];
-    $fecha_inicio = $_POST['fecha_inicio'];
-    $fecha_fin = $_POST['fecha_fin'];
-    $costo_total = $_POST['costo_total'];
+try{
 
-    $stmt = $con->prepare("UPDATE trabajos SET id_cliente=?, id_empleado=?, descripcion=?, tipo_trabajo=?, fecha_inicio=?, fecha_fin=?, costo_total=? WHERE id_trabajo=?");
+    $con = Database::connect();
 
-    if ($stmt->execute([$id_cliente, $id_empleado, $descripcion, $tipo_trabajo, $fecha_inicio, $fecha_fin, $costo_total, $id])) {
-        $mensaje = "Trabajo actualizado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al actualizar el trabajo";
-        $tipo_mensaje = "error";
+    if (!$con) {
+        throw new Exception("Error: No se pudo establecer conexión con la base de datos");
     }
+
+    // Manejar la actualización de trabajo
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'update') {
+        $id = $_POST['id_trabajo'];
+        $id_cliente = $_POST['id_cliente'];
+        $id_empleado = $_POST['id_empleado'];
+        $descripcion = $_POST['descripcion'];
+        $tipo_trabajo = $_POST['tipo_trabajo'];
+        $fecha_inicio = $_POST['fecha_inicio'];
+        $fecha_fin = $_POST['fecha_fin'];
+        $costo_total = $_POST['costo_total'];
+        
+        $stmt = "";
+        $stmt = $con->prepare("UPDATE trabajos SET id_cliente=?, id_empleado=?, descripcion=?, tipo_trabajo=?, fecha_inicio=?, fecha_fin=?, costo_total=? WHERE id_trabajo=?");
+        
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        if ($stmt->execute([$id_cliente, $id_empleado, $descripcion, $tipo_trabajo, $fecha_inicio, $fecha_fin, $costo_total, $id])) {
+            $mensaje = "Trabajo actualizado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Manejar la inserción de nuevo trabajo
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'insert') {
+        $id_cliente = $_POST['id_cliente'];
+        $id_empleado = $_POST['id_empleado'];
+        $descripcion = $_POST['descripcion'];
+        $tipo_trabajo = $_POST['tipo_trabajo'];
+        $fecha_inicio = $_POST['fecha_inicio'];
+        $fecha_fin = $_POST['fecha_fin'];
+        $costo_total = $_POST['costo_total'];
+        
+        // Obtener el último ID de la tabla
+        $stmt = "";
+        $stmt = $con->query("SELECT MAX(id_trabajo) as ultimo_id FROM trabajos");
+
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$resultado) {
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+
+        $ultimo_id = $resultado['ultimo_id'];
+        $siguiente_id = $ultimo_id + 1;
+        
+        // Insertar con el ID específico
+        $stmt = "";
+        $stmt = $con->prepare("INSERT INTO trabajos (id_trabajo, id_cliente, id_empleado, descripcion, tipo_trabajo, fecha_inicio, fecha_fin, costo_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+
+        if ($stmt->execute([$siguiente_id, $id_cliente, $id_empleado, $descripcion, $tipo_trabajo, $fecha_inicio, $fecha_fin, $costo_total])) {
+            $mensaje = "Trabajo agregado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Manejar la eliminación de trabajo
+    if ($_POST && isset($_POST['action']) && $_POST['action'] === 'delete') {
+        $id = $_POST['id_trabajo'];
+        
+        $stmt = "";
+        $stmt = $con->prepare("DELETE FROM trabajos WHERE id_trabajo = ?");
+
+        if (!$stmt) {
+            throw new Exception("Error: No se pudo preparar la consulta SQL");
+        }
+        
+        if ($stmt->execute([$id])) {
+            $mensaje = "Trabajo eliminado correctamente";
+            $tipo_mensaje = "success";
+        } else {
+            $tipo_mensaje = "error";
+            throw new Exception("Error: No se pudo ejecutar la consulta");
+        }
+    }
+
+    // Obtener todos los trabajos
+    $stmt = "";
+    $stmt = $con->prepare("SELECT * FROM trabajos");
+    
+    if (!$stmt) {
+        throw new Exception("Error: No se pudo preparar la consulta SQL");
+    }
+
+    $stmt->execute();
+    $trabajos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$trabajos) {
+        throw new Exception("Error: No se pudo ejecutar la consulta");
+    }
+
+} catch (PDOException $e) {
+    // Capturar errores específicos de PDO/Base de datos
+    error_log("Error de base de datos: " . $e->getMessage());
+    $mensajeError = $e->getMessage();
+    
+} catch (Exception $e) {
+    // Capturar otros errores generales
+    error_log("Error general: " . $e->getMessage());
+    $mensajeError = $e->getMessage();
 }
 
-// Manejar la inserción de nuevo trabajo
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'insert') {
-    $id_cliente = $_POST['id_cliente'];
-    $id_empleado = $_POST['id_empleado'];
-    $descripcion = $_POST['descripcion'];
-    $tipo_trabajo = $_POST['tipo_trabajo'];
-    $fecha_inicio = $_POST['fecha_inicio'];
-    $fecha_fin = $_POST['fecha_fin'];
-    $costo_total = $_POST['costo_total'];
-
-    $stmt = $con->query("SELECT MAX(id_trabajo) as ultimo_id FROM trabajos");
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    $ultimo_id = $resultado['ultimo_id'];
-
-    $siguiente_id = $ultimo_id + 1;
-
-    $stmt = $con->prepare("INSERT INTO trabajos (id_trabajo, id_cliente, id_empleado, descripcion, tipo_trabajo, fecha_inicio, fecha_fin, costo_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-
-    if ($stmt->execute([$siguiente_id, $id_cliente, $id_empleado, $descripcion, $tipo_trabajo, $fecha_inicio, $fecha_fin, $costo_total])) {
-        $mensaje = "Trabajo agregado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al agregar el trabajo";
-        $tipo_mensaje = "error";
-    }
-}
-
-// Manejar la eliminación de trabajo
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'delete') {
-    $id = $_POST['id_trabajo'];
-
-    $stmt = $con->prepare("DELETE FROM trabajos WHERE id_trabajo = ?");
-
-    if ($stmt->execute([$id])) {
-        $mensaje = "Trabajo eliminado correctamente";
-        $tipo_mensaje = "success";
-    } else {
-        $mensaje = "Error al eliminar el trabajo";
-        $tipo_mensaje = "error";
-    }
-}
-
-// Obtener todos los trabajos
-$stmt = $con->prepare("SELECT * FROM trabajos");
-$stmt->execute();
-$trabajos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

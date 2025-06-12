@@ -2,6 +2,7 @@
 // Iniciar la sesión PHP para poder usar variables de sesión
 session_start();
 
+// Inicializar variables
 $mostrarZonaEmpleado = false; 
 $username = "";           
 $mensajeError = "";
@@ -38,16 +39,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$usuarioLogueado) {
             
             // Establecer conexión con la base de datos
             require_once 'BD/Database.php';
-            $con = Database::connect();
-
-            // Preparar consulta SQL para buscar usuario con credenciales exactas
-            $stmt = $con->prepare("SELECT * FROM usuarios WHERE username = :username AND password = :password");
             
-            // Ejecutar la consulta con los parámetros proporcionados
-            $stmt->execute([
-                ':username' => $usuario, //parámetro para la consulta preparada
-                ':password' => $clave    //parámetro para la consulta preparada
-            ]);
+            try {
+                // Establecer conexión a la base de datos
+                $con = Database::connect();
+                
+                if (!$con) {
+                    throw new Exception("Error: No se pudo establecer conexión con la base de datos");
+                }
+
+                // Preparar consulta SQL para buscar usuario con credenciales exactas
+                $stmt = $con->prepare("SELECT * FROM usuarios WHERE username = :username AND password = :password");
+                
+                if (!$stmt) {
+                    throw new Exception("Error: No se pudo preparar la consulta SQL");
+                }
+                
+                // Ejecutar la consulta con los parámetros proporcionados
+                $resul = $stmt->execute([
+                    ':username' => $usuario, // parámetro para la consulta preparada
+                    ':password' => $clave    // parámetro para la consulta preparada
+                ]);
+                
+                if (!$resul) {
+                    throw new Exception("Error: No se pudo ejecutar la consulta");
+                }
+                
+            } catch (PDOException $e) {
+                // Capturar errores específicos de PDO/Base de datos
+                error_log("Error de base de datos: " . $e->getMessage());
+                $mensajeError = $e->getMessage();
+                
+            } catch (Exception $e) {
+                // Capturar otros errores generales
+                error_log("Error general: " . $e->getMessage());
+                $mensajeError = $e->getMessage();
+            }
 
             // Obtener todos los resultados de la consulta
             $resultado = $stmt->fetchAll();
@@ -113,7 +140,8 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
         <div class="container-fluid py-3 cabecera">
             <div class="row">
                 <div class="col-md-3 col-lg-2 d-md-block login">
-                    <?php if (!$mostrarZonaEmpleado): ?>
+                    <!-- Zona de inicio de sesión / bienvenida -->
+                    <?php if (!$mostrarZonaEmpleado && !$usuarioLogueado): ?>
                         <form method="post" action="" id="form" class="mb-3">
                             <div class="d-flex align-items-start gap-2">
                                 <div class="d-flex flex-column w-100">
@@ -127,7 +155,7 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
                                         <script>
                                             document.getElementById("dialogo").showModal();
                                             document.getElementById("cerrar").addEventListener("click", function () {
-                                                document.getElementById("dialogo").close();
+                                            document.getElementById("dialogo").close();
                                             });
                                         </script>
                                     <?php endif; ?>
@@ -138,7 +166,7 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
                     <?php else: ?>
                         <div class="d-flex flex-column">
                             <div class="text-wrap" style="font-size: 40px">
-                                Bienvenido <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
+                                Bienvenido/a <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -152,6 +180,7 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
         <div class="row">
             <div class="col-md-3 col-lg-2 d-md-block">
                 <div class="sticky-top">
+                    <!-- Barra de navegacion -->
                     <div class="sidebar">
                         <ul class="nav flex-column">
                             <li class="nav-item"><a href="paginaPrincipal.php" class="nav-link">Página Principal</a></li>
@@ -179,6 +208,7 @@ if (!$usuarioLogueado && isset($_COOKIE["username"]) && empty($username)) {
                     <img src="./imagenes/imagenPrincipal.jpg" alt="Imagen principal de Soe Pro Services">
                 </div>
                 <span class="textoImagenesGal">LA EMPRESA</span>
+                <!-- Contenedor con parrafo principal -->
                 <div class="contenedorParrafo">
                     <p class="parrafoPrincipal">
                     Soe Pro Services: 

@@ -1,4 +1,5 @@
 window.onload = function () {
+    /* Añadir eventListener */
     document.getElementById("imgBano").addEventListener("click", cambiarPresupuestoBano);
     document.getElementById("imgTejado").addEventListener("click", cambiarPresupuestoTejado);
     document.getElementById("imgCocina").addEventListener("click", cambiarPresupuestoCocina);
@@ -14,6 +15,7 @@ window.onload = function () {
     document.getElementById("bCalcularFont").addEventListener("click", calcularFont);
 }
 
+/* Funciones para mostrar la zona seleccionada */
 function cambiarPresupuestoBano() {
     document.getElementById("seleccion").classList.add("oculto");
     document.getElementById("bano").classList.remove("oculto");
@@ -34,6 +36,7 @@ function cambiarPresupuestoFontaneria() {
     document.getElementById("fontaneria").classList.remove("oculto");
 }
 
+/* Funciones para calcular el presupuesto */
 function calcularBano() {
     let total = 0;
     let result = document.getElementById("resultadoBano");

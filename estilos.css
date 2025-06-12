@@ -4,9 +4,9 @@
     font-weight: 900;
     font-size: 60px;
     height: 2.5em;
-    background: linear-gradient(90deg, #5271FF, #1E90FF);
+    background: linear-gradient(90deg, #5271FF, #1E90FF); /* Degradado horizontal */
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra suave para mejorar legibilidad */
 }
 
 .parrafoPrincipal {
@@ -16,13 +16,9 @@
     font-weight: 500;
     line-height: 1.6;
     padding: 30px;
-
     display: grid;
-
-    /* Cambia de texto alineado a la izquierda a centrado */
     text-align: center;
 }
-
 
 .textoImagenesGal {
     color: #1E90FF;
@@ -33,7 +29,7 @@
     padding: 30px;
     display: grid;
     text-align: center;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Sombra leve para resaltar texto */
 }
 
 .navegacion{
@@ -42,7 +38,7 @@
 }
 
 .sidebar {
-    background-color: #414141; /* Fondo semitransparente */
+    background-color: #414141; /* Fondo oscuro para resaltar el menú */
     border-radius: 15px; /* Bordes redondeados */
     padding: 20px;
     margin-top: 20px;
@@ -54,9 +50,8 @@
     transition: all 0.3s ease; /* Transición suave para interacciones */
 }
 .sidebar .nav-link:hover {
-    /* Efecto al pasar el cursor sobre los enlaces */
-    background-color: rgba(255, 255, 255, 0.1); /* Fondo ligeramente blanco */
-    transform: translateX(5px); /* Mueve el enlace ligeramente a la derecha */
+    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover con fondo blanco translúcido */
+    transform: translateX(5px); /* Desplazamiento horizontal leve al pasar el cursor */
 }
 
 .fondo{
@@ -64,12 +59,12 @@
 }
 
 .login{
-    position: absolute;
+    position: absolute; /* Posición absoluta sin coordenadas específicas: depende del contexto del contenedor */
 }
 
 .imagenesGaleria {
     display: grid;
-    place-items: center; 
+    place-items: center; /* Centra imagen tanto vertical como horizontalmente */
 }
 
 .imagenesGaleria img{
@@ -80,7 +75,7 @@
 
 .imagenSoplete {
     display: grid;
-    place-items: center; 
+    place-items: center; /* Centrado total de la imagen */
 }
 
 .imagenSoplete img{
@@ -95,24 +90,7 @@
     text-decoration: underline;
 }
 
-.presupuestoContainer {
-  position: relative;
-  width: 100%;
-  max-width: 600px;     
-  height: 600px;         
-  margin: 2rem auto;
-  overflow: hidden;
-}
-
-.presupuestoContainer img {
-  position: absolute;
-  width: 290px;
-  height: 290px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* Posicionamiento por clase */
+/* Posicionamiento por clase: estas clases se usan junto con position: absolute */
 .top-left {
   top: 0;
   left: 0;
@@ -134,7 +112,7 @@
 }
 
 .oculto{
-    display: none !important;
+    display: none !important; /* Fuerza ocultamiento sin posibilidad de sobrescritura */
 }
 
 .inputText{
@@ -153,7 +131,7 @@ dialog {
     border: none;
     border-radius: 12px;
     background-color: white; 
-    box-shadow: 0 8px 16px black; 
+    box-shadow: 0 8px 16px black; /* Sombra intensa para efecto flotante */
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: medium;
@@ -165,11 +143,11 @@ dialog {
     padding: 40px;
     margin: 30px auto;
     max-width: 1000px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra suave para separación visual */
 
     display: flex;
     flex-direction: column;
-    align-items: center; /* CENTRADO HORIZONTAL */
+    align-items: center;
 }
 
 
@@ -182,6 +160,38 @@ dialog {
 }
 
 .listaServicios li::marker {
-    color: #1E90FF;
-    font-size: 1.2em;
+    color: #1E90FF; /* Cambia el color del marcador de la lista (poco común) */
+    font-size: 1.2em; /* Agranda el marcador */
 }
+
+.presupuestoContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;     
+  height: 600px;         
+  margin: 2rem auto;
+  overflow: hidden; /* Oculta cualquier contenido que se salga del contenedor */
+  position: relative;
+  margin: 2rem auto;
+  overflow: visible; /* Permite que las imágenes puedan salirse del contenedor */
+}
+
+.presupuestoContainer img {
+  position: absolute; /* Permite posicionar imágenes en esquinas del contenedor */
+  width: 290px;
+  height: 290px;
+  object-fit: cover; /* Mantiene el aspecto al recortar la imagen */
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1; /* Para que flote por encima del resto */
+}
+
+.presupuestoContainer img:hover {
+  transform: scale(1.02) translateY(-4px); /* Zoom con leve desplazamiento hacia arriba */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  z-index: 10; /* Asegura que la imagen se muestre encima del resto */
+}
+
+
